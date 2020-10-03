@@ -7,5 +7,10 @@ class SearchTermModel {
   final List<String> colors;
 
   SearchTermModel(
-      {this.id, this.startYear, this.endYear, this.gender, this.countries, this.colors});
+      {this.id,
+      this.startYear,
+      this.endYear,
+      this.gender,
+      this.countries,
+      this.colors});
 }

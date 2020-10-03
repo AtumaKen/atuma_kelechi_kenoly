@@ -26,9 +26,12 @@ class SearchTiles extends StatelessWidget {
     if (colors.isEmpty) return null;
     return Column(
       children: colors
-          .map((e) => Text(
-                e,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+          .map((e) => Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  e,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                ),
               ))
           .toList(),
     );
@@ -39,9 +42,12 @@ class SearchTiles extends StatelessWidget {
     if (countries.isEmpty) return null;
     return Column(
       children: countries
-          .map((e) => Text(
-                e,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+          .map((e) => Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  e,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w300),
+                ),
               ))
           .toList(),
     );
@@ -50,6 +56,7 @@ class SearchTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Card(
           elevation: 0,
@@ -80,22 +87,32 @@ class SearchTiles extends StatelessWidget {
             ],
           ),
         ),
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-          ),
+        Container(
+          width: 200,
           child: Column(
             children: <Widget>[
-              Text("Gender $gender"),
-              Container(
-                child: _colorsList() ?? Text("No Colors here"),
-                height: 100,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text("Gender: ${gender == "" ? "No gender" : gender}"),
               ),
-              Container(
-                height: 100,
-                child: _countryList() ?? Text("No countries here"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Text("Colors:"),
+                      _colorsList() ?? Text("No Color"),
+                    ],
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text("Countries:"),
+                      _countryList() ?? Text("No country"),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
