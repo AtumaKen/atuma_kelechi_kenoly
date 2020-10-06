@@ -1,9 +1,10 @@
-import 'file:///C:/Users/ASUS/AndroidStudioProjects/atuma_kelechi_kenoly/lib/screens/lunch_page.dart';
 import 'package:atuma_kelechi_kenoly/providers/api_get.dart';
+import 'package:atuma_kelechi_kenoly/providers/utility.dart';
+import 'package:atuma_kelechi_kenoly/screens/launch_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'homepage.dart';
+import 'screens/result_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,8 +14,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: APIGet(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: APIGet()),
+        ChangeNotifierProvider.value(value: Utility())
+      ],
       child: MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
@@ -23,8 +27,11 @@ class MyApp extends StatelessWidget {
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           // home: MyHomePage(title: 'Flutter Demo Home Page'),
-          home: LunchPage(),
-          routes: {MyHomePage.routeName: (ctx) => MyHomePage()}),
+          home: LaunchPage(),
+          routes: {
+            ResultScreen.routeName: (ctx) => ResultScreen(),
+            LaunchPage.routeName: (ctx) => LaunchPage()
+          }),
     );
   }
 }
