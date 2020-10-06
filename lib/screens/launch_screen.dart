@@ -1,15 +1,17 @@
+import 'dart:io';
+
 import 'package:atuma_kelechi_kenoly/providers/api_get.dart';
-import 'package:atuma_kelechi_kenoly/utility/utility.dart';
 import 'package:atuma_kelechi_kenoly/widgets/lunch_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LunchPage extends StatefulWidget {
+class LaunchPage extends StatefulWidget {
+  static const routeName = "/lunchPage";
   @override
-  _LunchPageState createState() => _LunchPageState();
+  _LaunchPageState createState() => _LaunchPageState();
 }
 
-class _LunchPageState extends State<LunchPage> {
+class _LaunchPageState extends State<LaunchPage> {
   bool _isLoading = false;
   bool _isInit = true;
 
@@ -19,16 +21,43 @@ class _LunchPageState extends State<LunchPage> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<APIGet>(context).sendData().then((_) {
-        Utility.loadAsset().then((_) {
+      try {
+        Provider.of<APIGet>(context).sendData().then((_) {
           setState(() {
             _isLoading = false;
           });
         });
-      });
+      } on SocketException {
+        setState(() {
+          _isLoading = false;
+        });
+        _showErrorDialog(
+            "Oops... Something about the network. Check Data Connection");
+      } catch (error) {
+        setState(() {
+          _isLoading = false;
+        });
+        _showErrorDialog(error.toString());
+      }
     }
     super.didChangeDependencies();
     _isInit = false;
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("An Error Occured!"),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("Okay"),
+            onPressed: () => Navigator.of(ctx).pop(),
+          )
+        ],
+      ),
+    );
   }
 
   @override
