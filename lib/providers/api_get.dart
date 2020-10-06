@@ -13,23 +13,23 @@ class APIGet with ChangeNotifier {
 
   sendData() async {
     const url = "https://ven10.co/assessment/filter.json";
-    // try {
-    final response = await http.get(url);
-    List<SearchTermModel> searchTermModel = [];
-    final data = jsonDecode(response.body);
-    data.forEach((element) {
-      searchTermModel.add(SearchTermModel(
-          colors: List<String>.from(element["colors"]),
-          countries: List<String>.from(element["countries"]),
-          endYear: element["end_year"],
-          gender: element["gender"],
-          startYear: element["start_year"],
-          id: element["id"]));
-    });
-    _terms = searchTermModel;
-    notifyListeners();
-    // } catch (error) {
-    // throw error;
-    // }
+    try {
+      final response = await http.get(url);
+      List<SearchTermModel> searchTermModel = [];
+      final data = jsonDecode(response.body);
+      data.forEach((element) {
+        searchTermModel.add(SearchTermModel(
+            colors: List<String>.from(element["colors"]),
+            countries: List<String>.from(element["countries"]),
+            endYear: element["end_year"],
+            gender: element["gender"],
+            startYear: element["start_year"],
+            id: element["id"]));
+      });
+      _terms = searchTermModel;
+      notifyListeners();
+    } catch (error) {
+      throw error;
+    }
   }
 }

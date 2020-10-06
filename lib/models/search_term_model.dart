@@ -1,4 +1,6 @@
-class SearchTermModel {
+import 'package:flutter/cupertino.dart';
+
+class SearchTermModel with ChangeNotifier {
   final int id;
   final int startYear;
   final int endYear;

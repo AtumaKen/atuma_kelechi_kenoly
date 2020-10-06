@@ -1,28 +1,11 @@
+import 'package:atuma_kelechi_kenoly/models/search_term_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
 
 class SearchTiles extends StatelessWidget {
-  final List<String> colors;
-
-  final List<String> countries;
-  final int id;
-  final String gender;
-  final int startYear;
-  final int endYear;
-
-  const SearchTiles(
-      {Key key,
-      @required this.gender,
-      @required this.colors,
-      @required this.countries,
-      @required this.id,
-      @required this.startYear,
-      @required this.endYear})
-      : super(key: key);
-
-  Column _colorsList() {
+  Column _colorsList(List<String> colors) {
     if (colors.isEmpty) return null;
     return Column(
       children: colors
@@ -37,7 +20,7 @@ class SearchTiles extends StatelessWidget {
     );
   }
 
-  Column _countryList() {
+  Column _countryList(List<String> countries) {
     assert(countries.isNotEmpty);
     if (countries.isEmpty) return null;
     return Column(
@@ -55,6 +38,7 @@ class SearchTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchData = Provider.of<SearchTermModel>(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -71,7 +55,7 @@ class SearchTiles extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  id.toString(),
+                  searchData.id.toString(),
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -93,7 +77,8 @@ class SearchTiles extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Gender: ${gender == "" ? "No gender" : gender}"),
+                child: Text(
+                    "Gender: ${searchData.gender == "" ? "No gender" : searchData.gender}"),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,13 +88,13 @@ class SearchTiles extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       Text("Colors:"),
-                      _colorsList() ?? Text("No Color"),
+                      _colorsList(searchData.colors) ?? Text("No Color"),
                     ],
                   ),
                   Column(
                     children: <Widget>[
                       Text("Countries:"),
-                      _countryList() ?? Text("No country"),
+                      _countryList(searchData.countries) ?? Text("No country"),
                     ],
                   ),
                 ],

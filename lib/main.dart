@@ -16,15 +16,15 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: APIGet(),
       child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          fontFamily: "Anton",
-          primarySwatch: Colors.red,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        // home: MyHomePage(title: 'Flutter Demo Home Page'),
-        home: LunchPage(),
-      ),
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            fontFamily: "Anton",
+            primarySwatch: Colors.red,
+            visualDensity: VisualDensity.adaptivePlatformDensity,
+          ),
+          // home: MyHomePage(title: 'Flutter Demo Home Page'),
+          home: LunchPage(),
+          routes: {MyHomePage.routeName: (ctx) => MyHomePage()}),
     );
   }
 }

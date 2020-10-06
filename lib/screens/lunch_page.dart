@@ -1,4 +1,5 @@
 import 'package:atuma_kelechi_kenoly/providers/api_get.dart';
+import 'package:atuma_kelechi_kenoly/utility/utility.dart';
 import 'package:atuma_kelechi_kenoly/widgets/lunch_page_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +12,7 @@ class LunchPage extends StatefulWidget {
 class _LunchPageState extends State<LunchPage> {
   bool _isLoading = false;
   bool _isInit = true;
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -18,8 +20,10 @@ class _LunchPageState extends State<LunchPage> {
         _isLoading = true;
       });
       Provider.of<APIGet>(context).sendData().then((_) {
-        setState(() {
-          _isLoading = false;
+        Utility.loadAsset().then((_) {
+          setState(() {
+            _isLoading = false;
+          });
         });
       });
     }
