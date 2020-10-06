@@ -3,12 +3,13 @@ import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class Utility {
-  static Map<String, List<dynamic>> allData = {};
-  static Set<int> resultIndexes;
-  static List<List<dynamic>> csvTable;
+class Utility with ChangeNotifier {
+  Map<String, List<dynamic>> allData = {};
+  Set<int> resultIndexes;
+  List<List<dynamic>> csvTable;
+  List<List<dynamic>> results;
 
-  static Future<void> loadAsset() async {
+  Future<void> loadAsset() async {
     try {
       final myData = await rootBundle.loadString('venten/car_ownsers_data.csv');
 
@@ -26,40 +27,43 @@ class Utility {
         "job_title": csvTable.map((e) => e[9]).toList(),
         "bio": csvTable.map((e) => e[10]).toList(),
       };
+      notifyListeners();
     } catch (error) {
       throw error;
     }
     return allData;
   }
 
-  static filterTerms(SearchTermModel searchTermModel){
- // ignore: missing_return
- allData.map((key, value) {
-  if(key == "gender"){
-    if (searchTermModel.gender == "") return;
-    // value.where((e) => e == searchTermModel.gender).toList();
-    for(int i =0; i <value.length; i++){
-      if (searchTermModel.gender == value[i]) resultIndexes.add(i);
-    }
-  }
-  if (key == "car_model_year"){
+  filterTerms(SearchTermModel searchTermModel) {
     // ignore: missing_return
-      for(int i =0; i<value.length; i++)
-      if (searchTermModel.startYear <= value[i] && value[i] <= searchTermModel)
-        resultIndexes.add(i);
-  }
-  if (key == "country"){
-    if (searchTermModel.countries.isEmpty) return;
-    for(int i =0; i<value.length; i++){
-        if(searchTermModel.countries.contains(value[i])) resultIndexes.add(i);
-    }
-  }
-});
+    allData.map((key, value) {
+      if (key == "gender") {
+        if (searchTermModel.gender == "") return;
+        // value.where((e) => e == searchTermModel.gender).toList();
+        for (int i = 0; i < value.length; i++) {
+          if (searchTermModel.gender == value[i]) resultIndexes.add(i);
+        }
+      }
+      if (key == "car_model_year") {
+        // ignore: missing_return
+        for (int i = 0; i < value.length; i++)
+          if (searchTermModel.startYear <= value[i] &&
+              value[i] <= searchTermModel) resultIndexes.add(i);
+      }
+      if (key == "country") {
+        if (searchTermModel.countries.isEmpty) return;
+        for (int i = 0; i < value.length; i++) {
+          if (searchTermModel.countries.contains(value[i]))
+            resultIndexes.add(i);
+        }
+      }
+    });
+    notifyListeners();
   }
 
-  static Future<List<List<dynamic>>> getFilteredResult() async{
+  getFilteredResult() {
     List<List<dynamic>> results = [];
     resultIndexes.map((e) => results.add(csvTable[e])).toList();
-    return results;
+    notifyListeners();
   }
 }
